@@ -44,7 +44,7 @@
           <v-btn
             color="blue darken-2"
             text
-            x-small            
+            x-small
             :light="false"
           >
             Forgot password?
@@ -133,10 +133,11 @@ export default {
         })
         console.log(response)
 
-        if (response.data.success) {
+        if (response.data.token) {
           this.$store.commit('setIslogon', true)
           console.log('store logon', this.$store.state.isLogon)
           this.$router.push({ name: 'index' })
+          console.log(this.$auth.loggedIn);
         }
       } catch (err) {
         console.log(err)

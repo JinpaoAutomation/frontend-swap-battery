@@ -52,7 +52,7 @@ export default {
     '@nuxtjs/auth-next',
   ],
 
-  auth: {   
+  auth: {
     redirect: {
       login: '/login',
       logout: '/login',
@@ -60,13 +60,13 @@ export default {
       home: '/login'
     },
     strategies: {
-      
+
       local: {
         cookie: {
           name: 'sid'
         },
         token: {
-          property: 'Authorization',
+          property: 'token',
           global: true,
           required: true,
           type: 'Bearer',
@@ -77,8 +77,8 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://ws-charging.herokuapp.com/api/login', method: 'post', propertyName: 'Authorization',  },
-          logout: { url: 'https://ws-charging.herokuapp.com/api/logout', method: 'post', propertyName: 'Authorization', },
+          login: { url: 'https://swap-charge.herokuapp.com/users/login', method: 'post', propertyName: 'token',  },
+          logout: { url: 'https://swap-charge.herokuapp.com/users/logout', method: 'post', propertyName: 'token', },
           user: false//{ url: '/api/auth/user', method: 'get' }
         }
       }
@@ -88,8 +88,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://ws-charging.herokuapp.com',            
- 
+    baseURL: 'https://swap-charge.herokuapp.com',
+
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
