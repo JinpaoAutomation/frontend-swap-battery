@@ -139,6 +139,7 @@ export default {
           this.$router.push({ name: 'index' })
           console.log(this.$auth.loggedIn);
         }
+        
       } catch (err) {
         console.log(err)
       }

@@ -9,54 +9,6 @@
       v-if="isLogon()"
     >
       <v-list>
-        <v-list-group no-action>
-          <template v-slot:activator>
-            <v-list-item-action>
-              <v-icon>mdi-credit-card-settings-outline</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="'Card'" />
-            </v-list-item-content>
-          </template>
-
-          <v-list-item
-            v-for="(item, index) in cardItem"
-            :key="index"
-            :to="item.to"
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group no-action>
-          <template v-slot:activator>
-            <v-list-item-action>
-              <v-icon>mdi-account-multiple</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="'Member'" />
-            </v-list-item-content>
-          </template>
-
-          <v-list-item
-            v-for="(item, index) in memberItem"
-            :key="index"
-            :to="item.to"
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -74,9 +26,7 @@
           </template>
         </v-list-item>
 
-         <v-list-item
-         @click="logout"
-        >
+        <v-list-item @click="logout">
           <template>
             <v-list-item-action>
               <v-icon>mdi-logout</v-icon>
@@ -104,16 +54,7 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <!-- <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer> -->
+
     <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -121,8 +62,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-
 export default {
   computed: {},
   mounted() {
@@ -144,41 +83,21 @@ export default {
       drawer: true,
       fixed: false,
       items: [
-        // {
-        //   icon: 'mdi-account-multiple',
-        //   title: 'Member',
-        //   to: '/member',
-        // },
-        // {
-        //   icon: 'mdi-cash-multiple',
-        //   title: 'Cash',
-        //   to: '/cash',
-        // },
-        // {
-        //   icon: 'mdi-monitor-eye',
-        //   title: 'Machine',
-        //   to: '/machine',
-        // },
+        {
+          icon: 'mdi-clipboard-plus',
+          title: 'Create Statioin',
+          to: '/createStation',
+        },
         {
           icon: 'mdi-monitor-eye',
           title: 'Monitor',
           to: '/monitor',
         },
-        // {
-        //   icon: 'mdi-folder-clock-outline',
-        //   title: 'History',
-        //   to: '/history',
-        // },
         {
           icon: 'mdi-chat-alert',
           title: 'About',
           to: '/about',
         },
-        // {
-        //   icon: 'mdi-account',
-        //   title: 'Login',
-        //   to: '/login',
-        // },
       ],
       cardItem: [
         {
@@ -207,7 +126,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Jinpao Charger',
+      title: 'SWAP BATTERY',
       loggedIn: this.$store.state.isLogon,
     }
   },

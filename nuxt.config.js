@@ -8,7 +8,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - charger ',
+    titleTemplate: '%s - SWAP BATTERY ',
     title: 'Jinpao ',
     meta: [
       { charset: 'utf-8' },
@@ -88,7 +88,9 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://swap-charge.herokuapp.com',
+    // baseURL: 'https://swap-charge.herokuapp.com',
+    baseURL: 'http://localhost:334',
+
 
   },
 
