@@ -89,6 +89,11 @@ export default {
           to: '/createStation',
         },
         {
+          icon: 'mdi-account-multiple',
+          title: 'Client',
+          to: '/Client',
+        },
+        {
           icon: 'mdi-monitor-eye',
           title: 'Monitor',
           to: '/monitor',
