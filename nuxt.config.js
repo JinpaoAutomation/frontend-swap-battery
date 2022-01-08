@@ -88,8 +88,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // baseURL: 'https://swap-charge.herokuapp.com',
-    baseURL: 'http://localhost:334',
+    baseURL: 'https://swap-charge.herokuapp.com',
+    // baseURL: 'http://localhost:334',
 
 
   },
