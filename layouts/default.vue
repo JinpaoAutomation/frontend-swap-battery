@@ -39,7 +39,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar :clipped-left="clipped" fixed app v-if="isLogon()">
+    <v-app-bar  :clipped-left="clipped" fixed app v-if="isLogon()">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>

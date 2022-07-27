@@ -102,6 +102,7 @@
 import dataHost from '../model/dataRef.vue'
 
 export default {
+  layout:'home',
   data() {
     return {
       itemRegister: {
@@ -137,7 +138,7 @@ export default {
   },
   methods: {
     register() {
-      this.alert = false      
+      this.alert = false
       if (this.valid) {
         this.$axios
           .post(`${dataHost.host}/api/register`, this.itemRegister)

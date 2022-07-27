@@ -78,6 +78,7 @@
 import dataHost from '../model/dataRef.vue'
 
 export default {
+  layout:'home',
   computed: {
     get() {
       return this.$store.state.isLogon
@@ -138,8 +139,10 @@ export default {
           console.log('store logon', this.$store.state.isLogon)
           this.$router.push({ name: 'index' })
           console.log(this.$auth.loggedIn);
+        }else {
+          alert('username or password is incorrect')
         }
-        
+
       } catch (err) {
         console.log(err)
       }

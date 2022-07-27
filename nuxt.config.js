@@ -5,7 +5,9 @@ export default {
   target: 'static',
   // target: 'server',
   ssr: false, // default value
-
+  server: {
+    port: 3000 // default: 3000
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - SWAP BATTERY ',
@@ -54,10 +56,10 @@ export default {
 
   auth: {
     redirect: {
-      login: '/login',
-      logout: '/login',
-      callback: '/login',
-      home: '/login'
+      login: '/home',
+      logout: '/home',
+      callback: '/home',
+      home: '/home'
     },
     strategies: {
 
@@ -77,8 +79,8 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://swap-charge.herokuapp.com/users/login', method: 'post', propertyName: 'token',  },
-          logout: { url: 'https://swap-charge.herokuapp.com/users/logout', method: 'post', propertyName: 'token', },
+          login: { url: '/users/login', method: 'post', propertyName: 'token',  },
+          logout: { url: '/users/logout', method: 'post', propertyName: 'token', },
           user: false//{ url: '/api/auth/user', method: 'get' }
         }
       }
@@ -88,8 +90,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://swap-charge.herokuapp.com',
-    // baseURL: 'http://localhost:334',
+    // baseURL: 'http://jinpaoauto.com:8003',
+    baseURL: 'http://localhost:8003',
 
 
   },

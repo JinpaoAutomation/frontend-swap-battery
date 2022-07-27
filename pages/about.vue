@@ -39,9 +39,11 @@
 
               <v-list-item-content>
                 <v-list-item-title>EMAIL</v-list-item-title>
-                <v-list-item-subtitle>demo@jinpao.co.th</v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  automation_robot@jinpao.co.th
+                </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  >automation@jinpao.co.th</v-list-item-subtitle
+                  >automation_software@jinpao.co.th</v-list-item-subtitle
                 >
               </v-list-item-content>
             </v-list-item>
@@ -55,16 +57,16 @@
 
               <v-list-item-content>
                 <v-list-item-title>PHONE</v-list-item-title>
-                <v-list-item-subtitle
-                  >(+66) 709-3367 ext 131, 246</v-list-item-subtitle
-                >
-                <v-list-item-subtitle
-                  >(+66) 709-3687 ext 131, 246</v-list-item-subtitle
-                >
+                <v-list-item-subtitle>
+                  (+66) 709-3367 ext 519
+                </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  (+66) 709-3687 ext 519
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
-          </v-list>     
+          </v-list>
         </v-col>
       </v-card>
       <v-col cols="1" class="text-center hidden-sm-and-down col col-2 py-12">
@@ -76,6 +78,10 @@
 
 <script>
 export default {
-  
+  // layout: this.$auth.loggedIn ? 'home': 'default'
+
+  layout: (context) => {
+    return context.$auth.loggedIn ? 'default' : 'home'
+  },
 }
 </script>

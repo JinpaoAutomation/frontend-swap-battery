@@ -7,7 +7,7 @@
       :items="station"
       item-key="name"
       sort-by="name"
-      class="elevation-1"
+      class="text-subtitle-1"
       :search="search"
     >
       <template v-slot:top>
@@ -17,45 +17,74 @@
           class="mx-4"
         ></v-text-field>
       </template>
-      <template v-slot:item.battery="{ item }">
-        <v-chip
-          class="ma-2"
-          v-for="battery in item.battery"
-          :color="
-            battery.isBooking
-              ? 'blue'
-              : getIconBatteryStatus(battery.status).color
-          "
-          small
-          text-color="grey lighten-4"
-        >
-          <v-icon class="mr-1" size="25px" color="black">
-            {{
-              battery.isBooking
-                ? 'mdi-battery-alert'
-                : getIconBatteryStatus(battery.status).icon
-            }}
-          </v-icon>
+      <!-- <template v-slot:[`item.stationId`]="{ item }">
 
-          <strong class="mx-1"
-            >No.{{ battery.id }}
-            {{ battery.isBooking ? 'Booked' : battery.status }}
-          </strong>
-        </v-chip>
+   </template> -->
+      <template v-slot:[`item.battery`]="{ item }">
+        <v-row>
+          <v-col
+            v-for="battery in item.battery"
+            :key="battery.id"
+            class="col-xs-12 col-sm-10 col-md-6 col-lg-6 col-xl-3 mb-2 "
+          >
+            <v-card
+              :color="
+                battery.isBooking
+                  ? 'blue'
+                  : getIconBatteryStatus(battery.status).color
+              "
+            >
+              <v-list-item three-line>
+                <v-list-item-avatar tile size="40" class="text-center">
+                  <v-icon class="mr-1" size="30" color="white">
+                    {{
+                      battery.isBooking
+                        ? 'mdi-battery-alert'
+                        : getIconBatteryStatus(battery.status).icon
+                    }}
+                  </v-icon>
+                </v-list-item-avatar>
+
+                <v-list-item-content class="white--text text-subtitle-1">
+                  <div class="mb-2">
+                    <span class=""> No.{{ battery.id }} </span>
+
+                    <span class="text-subtitle-1">
+                      {{ battery.isBooking ? 'Booked' : battery.status }}
+                    </span>
+                  </div>
+
+                  <v-list-item-subtitle class="white--text">
+                    battery_ID:
+                    <span class="black text-body-2">
+                      {{ battery.battery_id }}
+                    </span>
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="white--text">
+                    voltage
+                    <span class="black">
+                      {{ battery.voltage }}
+                    </span>
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="white--text">
+                    SOC
+                    <span class="black"> {{ battery.SOC }} % </span>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
+          </v-col>
+        </v-row>
       </template>
 
-      <template v-slot:item.action="{ item }">
+      <template v-slot:[`item.action`]="{ item }">
         <!-- <v-chip small color="blue" @click="() => {}" outlined>
           <v-icon class="" size="20px"> mdi-pencil </v-icon>
         </v-chip> -->
 
         <v-chip
           small
-          :color="
-            item.StatusStation == 'TRUE'
-              ? 'light-green accent-4'
-              : 'deep-orange'
-          "
+          :color="item.statusStation ? 'light-green accent-4' : 'deep-orange'"
           @click="powerStation(item)"
           text-color="white"
         >
@@ -67,7 +96,7 @@
         </v-chip>
       </template>
 
-      <template v-slot:top>
+      <template v-slot:[`top`]>
         <!-- Delete client -->
         <v-dialog persistent v-model="deleteClientDialog" width="500">
           <v-card>
@@ -108,7 +137,6 @@
     <v-alert dense text type="error" :value="alertError">
       Error <strong>{{ alertMsg }}</strong> try again
     </v-alert>
-
   </v-container>
 </template>
 
@@ -125,9 +153,9 @@ export default {
         {
           text: 'Station ID',
           align: 'start',
-          value: 'station',
+          value: 'stationId',
         },
-        { text: 'Station Name', value: 'Title', align: 'start' },
+        // { text: 'Station Name', value: 'stationName', align: 'start' },
         {
           text: 'battery',
           value: 'battery',
@@ -162,13 +190,13 @@ export default {
           result = { icon, color }
           return result
         case 'ready':
-          result = { icon: 'mdi-battery-check', color: 'green darken-3' }
+          result = { icon: 'mdi-battery-check', color: 'green darken-2' }
           return result
         case 'vacant':
           result = { icon: 'mdi-battery-outline', color: 'grey' }
           return result
         case 'ng':
-          result = { icon: 'mdi-battery-off-outline', color: 'red darken-4' }
+          result = { icon: 'mdi-battery-off-outline', color: 'red darken-2' }
           return result
         default:
           result = { icon: 'mdi-battery-unknown', color: 'red' }
@@ -177,14 +205,11 @@ export default {
     },
     powerStation(item) {
       console.count(item.StatusStation)
-      item.StatusStation == 'FALSE'
-        ? (item.StatusStation = 'TRUE')
-        : (item.StatusStation = 'FALSE')
-
+      item.StatusStation = !item.StatusStation
       this.$axios.post('/api/updateSector', {
         station: item.station,
         data: {
-          StatusStation: item.StatusStation,
+          StatusStation: !item.StatusStation,
         },
       })
     },
@@ -196,7 +221,7 @@ export default {
           this.alertSuccess = true
           this.alertMsg = `Successfully deleted ${this.slotItem.station}`
           this.station = this.station.filter(
-            item => item.station !== this.slotItem.station
+            (item) => item.station !== this.slotItem.station
           )
           setTimeout(() => {
             this.alertSuccess = false
@@ -232,7 +257,7 @@ export default {
       this.$axios.get(`/api/station=all`).then((res) => {
         this.station = res.data
       })
-    }, 1000 * 60)
+    }, 1000 * 3)
   },
 }
 </script>
