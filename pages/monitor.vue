@@ -17,71 +17,61 @@
           class="mx-4"
         ></v-text-field>
       </template>
-      <!-- <template v-slot:[`item.stationId`]="{ item }">
 
-   </template> -->
+      <template v-slot:[`item.stationId`]="{ item }">
+        <h4>{{ item.stationId }}</h4>
+      </template>
+
       <template v-slot:[`item.battery`]="{ item }">
-        <v-row>
+        <v-row class="ma-0">
           <v-col
+            class="mt-1 pa-1"
             v-for="battery in item.battery"
             :key="battery.id"
-            class="col-xs-12 col-sm-10 col-md-6 col-lg-6 col-xl-3 mb-2 "
           >
-            <v-card
-              :color="
+            <v-list-item
+              :class="
                 battery.isBooking
                   ? 'blue'
                   : getIconBatteryStatus(battery.status).color
               "
+              class="px-2"
             >
-              <v-list-item three-line>
-                <v-list-item-avatar tile size="40" class="text-center">
-                  <v-icon class="mr-1" size="30" color="white">
-                    {{
-                      battery.isBooking
-                        ? 'mdi-battery-alert'
-                        : getIconBatteryStatus(battery.status).icon
-                    }}
-                  </v-icon>
-                </v-list-item-avatar>
+              <v-list-item-content class="pa-2 ma-0">
+                <v-list-item-title class="text-center item-title">
+                  {{
+                    `${battery.id} ${
+                      battery.isBooking ? 'booked' : battery.status
+                    }`
+                  }}
+                </v-list-item-title>
 
-                <v-list-item-content class="white--text text-subtitle-1">
-                  <div class="mb-2">
-                    <span class=""> No.{{ battery.id }} </span>
+                <v-list-item-subtitle>
+                  {{ `${battery.battery_id}` }}
+                </v-list-item-subtitle>
 
-                    <span class="text-subtitle-1">
-                      {{ battery.isBooking ? 'Booked' : battery.status }}
-                    </span>
-                  </div>
+                <v-list-item-subtitle>
+                  Volt {{ battery.voltage }}
+                </v-list-item-subtitle>
 
-                  <v-list-item-subtitle class="white--text">
-                    battery_ID:
-                    <span class="black text-body-2">
-                      {{ battery.battery_id }}
-                    </span>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle class="white--text">
-                    voltage
-                    <span class="black">
-                      {{ battery.voltage }}
-                    </span>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle class="white--text">
-                    SOC
-                    <span class="black"> {{ battery.SOC }} % </span>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-card>
+                <v-list-item-subtitle>
+                  SOC {{ battery.SOC }} %
+                </v-list-item-subtitle>
+
+                <v-list-item-subtitle>
+                  Temp {{ battery.temperature }} ℃
+                </v-list-item-subtitle>
+
+                <v-list-item-subtitle v-if="battery.isBooking" class="blue">
+                  Booked By {{ battery.userBooking }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
           </v-col>
         </v-row>
       </template>
 
       <template v-slot:[`item.action`]="{ item }">
-        <!-- <v-chip small color="blue" @click="() => {}" outlined>
-          <v-icon class="" size="20px"> mdi-pencil </v-icon>
-        </v-chip> -->
-
         <v-chip
           small
           :color="item.statusStation ? 'light-green accent-4' : 'deep-orange'"
@@ -181,8 +171,10 @@ export default {
     }
   },
   methods: {
-    getIconBatteryStatus(status) {
+    getIconBatteryStatus(_status) {
       let result = {}
+      const status = _status ?? '-'
+
       switch (status.toLowerCase()) {
         case 'charging':
           let icon = 'mdi-battery-charging-50'
@@ -190,50 +182,69 @@ export default {
           result = { icon, color }
           return result
         case 'ready':
-          result = { icon: 'mdi-battery-check', color: 'green darken-2' }
+          result = { icon: 'mdi-battery-check', color: 'green lighten-1' }
           return result
         case 'vacant':
           result = { icon: 'mdi-battery-outline', color: 'grey' }
           return result
         case 'ng':
-          result = { icon: 'mdi-battery-off-outline', color: 'red darken-2' }
+          result = { icon: 'mdi-battery-off-outline', color: 'red lighten-1' }
           return result
         default:
-          result = { icon: 'mdi-battery-unknown', color: 'red' }
+          result = { icon: 'mdi-battery-unknown', color: 'pink darken-4' }
           return result
       }
     },
     powerStation(item) {
       console.count(item.StatusStation)
       item.StatusStation = !item.StatusStation
-      this.$axios.post('/api/updateSector', {
-        station: item.station,
-        data: {
-          StatusStation: !item.StatusStation,
-        },
-      })
+      this.$axios
+        .post('/api/updateOneStation', {
+          stationId: item.stationId,
+          statusStation: !item.statusStation,
+        })
+        .then((res) => {
+          console.log(res.data.success)
+          if (res.data.success) {
+            this.alertSuccess = true
+            this.alertMsg = `Successfully`
+            this.$axios.get(`/api/station=all`).then((res) => {
+              this.station = res.data
+            })
+          }
+          setTimeout(() => {
+            this.alertSuccess = false
+          }, 1000 * 10)
+        })
+        .catch((error) => {
+          this.alertError = true
+          this.alertMsg = error.response.data.message
+          console.log(error.toJSON())
+          setTimeout(() => {
+            this.alertError = false
+          }, 1000 * 10)
+        })
     },
     deleteClient() {
       this.deleteClientDialog = false
+      console.log(this.slotItem)
       this.$axios
-        .delete(`/api/deleteStation/${this.slotItem.station}`)
+        .delete(`/api/deleteStation/${this.slotItem.stationId}`)
         .then((res) => {
           this.alertSuccess = true
-          this.alertMsg = `Successfully deleted ${this.slotItem.station}`
+          this.alertMsg = `Successfully deleted ${this.slotItem.stationId}`
           this.station = this.station.filter(
-            (item) => item.station !== this.slotItem.station
+            (item) => item.stationId !== this.slotItem.stationId
           )
           setTimeout(() => {
             this.alertSuccess = false
-          }, 5000)
+          }, 1000 * 10)
         })
         .catch((err) => {
           this.alertError = true
-          this.alertMsg = err.message
+          this.alertMsg = err.response.data.message
+          console.log(err.response.data.message)
           this.deleteClientDialog = false
-          setTimeout(() => {
-            this.alertError = false
-          }, 5000)
         })
     },
     onDelete(item) {
@@ -257,7 +268,16 @@ export default {
       this.$axios.get(`/api/station=all`).then((res) => {
         this.station = res.data
       })
-    }, 1000 * 3)
+    }, 1000 * 10)
   },
 }
 </script>
+
+<style scoped>
+.item-title {
+  line-height: 1;
+  font-size: 1rem;
+  letter-spacing: 0em;
+  font-weight: 400;
+}
+</style>

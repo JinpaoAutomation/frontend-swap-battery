@@ -41,12 +41,7 @@
             login
           </v-btn>
 
-          <v-btn
-            color="blue darken-2"
-            text
-            x-small
-            :light="false"
-          >
+          <v-btn color="blue darken-2" text x-small :light="false">
             Forgot password?
           </v-btn>
         </v-card>
@@ -54,7 +49,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12" xs="8" sm="8" md="8" lg="5" xl="4">
-        <v-card class="mx-auto pa-3"  outlined>
+        <v-card class="mx-auto pa-3" outlined>
           <v-card-text class="pa-0">
             Don't Have an Account?
             <v-btn
@@ -75,10 +70,8 @@
 </template>
 
 <script>
-import dataHost from '../model/dataRef.vue'
-
 export default {
-  layout:'home',
+  layout: 'home',
   computed: {
     get() {
       return this.$store.state.isLogon
@@ -105,44 +98,33 @@ export default {
     }
   },
   methods: {
-    async login() {
-      console.log('Login():!')
-      if (this.username && this.password) {
-        const { success, Authorization } = await this.$axios.$post(
-          `${dataHost.host}/api/login`,
-          {
-            username: this.username,
-            password: this.password,
-          }
-        )
-        console.log('res', success, Authorization)
-
-        if (success) {
-          console.log('Router', this.$router)
-        }
-      }
-    },
     async userLogin() {
       try {
         console.log('cookie:', this.$auth.options)
         console.log('CTX', this.$auth)
-        const response = await this.$auth.loginWith('local', {
-          data: {
-            username: this.username,
-            password: this.password,
-          },
-        })
-        console.log(response)
+        this.$auth
+          .loginWith('local', {
+            data: {
+              username: this.username,
+              password: this.password,
+            },
+          })
+          .then((response) => {
+            console.log(response)
 
-        if (response.data.token) {
-          this.$store.commit('setIslogon', true)
-          console.log('store logon', this.$store.state.isLogon)
-          this.$router.push({ name: 'index' })
-          console.log(this.$auth.loggedIn);
-        }else {
-          alert('username or password is incorrect')
-        }
-
+            if (response.data.token) {
+              this.$store.commit('setIslogon', true)
+              console.log('store logon', this.$store.state.isLogon)
+              this.$router.push({ name: 'index' })
+              console.log(this.$auth.loggedIn)
+            } else {
+              alert('username or password is incorrect')
+            }
+          })
+          .catch((err) => {
+           // console.log(err.response.data)
+            alert('username or password is incorrect')
+          })
       } catch (err) {
         console.log(err)
       }

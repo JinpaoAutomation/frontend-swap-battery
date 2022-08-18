@@ -102,13 +102,6 @@ export default {
       },
     },
     items: [
-      'RFID0001',
-      'RFID0002',
-      'RFID0003',
-      'RFID0004',
-      'RFID0005',
-      'RFID0006',
-      'RFID0010',
     ],
   }),
 
@@ -150,6 +143,7 @@ export default {
     async submit() {
       this.formHasErrors = false
       try {
+        console.log(this.form);
         if (this.$refs.form.validate()) {
            await this.$axios
             .post(`/api/createStation`, {

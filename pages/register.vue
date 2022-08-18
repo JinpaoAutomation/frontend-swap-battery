@@ -35,7 +35,7 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="itemRegister.fullname"
+              v-model="itemRegister.fullName"
               prepend-icon="mdi-format-text"
               type="text"
               clearable
@@ -55,12 +55,12 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="itemRegister.mobileNumber"
+              v-model="itemRegister.mobilePhone"
               prepend-icon="mdi-phone"
               label="Mobile Number"
               autocomplete="off"
               clearable
-              :rules="[rules.required, rules.mobileNumber]"
+              :rules="[rules.required, rules.mobilePhone]"
             ></v-text-field>
 
             <v-btn
@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import dataHost from '../model/dataRef.vue'
 
 export default {
   layout:'home',
@@ -107,10 +106,10 @@ export default {
     return {
       itemRegister: {
         username: '',
-        fullname: '',
+        fullName: '',
         password: '',
         email: '',
-        mobileNumber: '',
+        mobilePhone: '',
       },
       errorMessages: '',
       valid: false,
@@ -125,7 +124,7 @@ export default {
           return pattern.test(value) || 'Invalid e-mail.'
         },
         charMoreThenSix: (v) => v.length >= 6 || 'Min 6 characters',
-        mobileNumber: (value) => {
+        mobilePhone: (value) => {
           const pattern = /^([0-9]*)$/
           return pattern.test(value) || 'Invalid moblie number only'
         },
@@ -141,10 +140,10 @@ export default {
       this.alert = false
       if (this.valid) {
         this.$axios
-          .post(`${dataHost.host}/api/register`, this.itemRegister)
+          .post(`/users/register`, this.itemRegister)
           .then((res) => {
             console.log('res', res)
-            if (res.data.success){
+            if (res.data.token){
              alert('Register completed! Back to Login');
              this.$router.replace('login')
             }

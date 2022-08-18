@@ -69,8 +69,8 @@
             <v-divider class="mt-10"></v-divider>
 
             <v-card-actions>
-             
-              
+
+
               <!-- <v-space></v-space> -->
               <v-slide-x-reverse-transition>
                 <v-tooltip v-if="formHasErrors" left>
@@ -110,7 +110,6 @@
 
 
 <script>
-import dataRef from '../model/dataRef.vue'
 
 export default {
   middleware: 'auth',
@@ -155,7 +154,7 @@ export default {
     },
     updateCard() {
       this.cards = []
-      this.$axios.get(`${dataRef.host}/api/getAllCard`).then((res) => {
+      this.$axios.get(`/api/getAllCard`).then((res) => {
         console.log(res.data.data)
         this.desserts = res.data.data
         this.loading = false
@@ -191,7 +190,7 @@ export default {
 
       if (this.$refs.form.validate()) {
         this.$axios
-          .post(`${dataRef.host}/api/addClient`, this.form)
+          .post(`/api/addClient`, this.form)
           .then((res) => {
             if (res.data.success) {
               this.resetForm()
@@ -214,7 +213,7 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get(`${dataRef.host}/api/getAllCard`).then((res) => {
+    this.$axios.get(`/api/getAllCard`).then((res) => {
       console.log(res.data.data)
       this.desserts = res.data.data
       this.loading = false

@@ -209,7 +209,7 @@
 </template>
 
 <script>
-import dataRef from '../model/dataRef.vue'
+
 // import CardAdd from "./cardAdd.vue";
 
 export default {
@@ -317,7 +317,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.$axios
           .get(
-            `${dataRef.host}/api/cardId/amountup/${
+            `/api/cardId/amountup/${
               this.editedItem.cardId
             }/${Number(this.amount)}`
           )
@@ -340,7 +340,7 @@ export default {
     },
     deleteICard() {
       this.$axios
-        .get(`${dataRef.host}/api/cardId/delete/${this.editedItem.cardId}`)
+        .get(`/api/cardId/delete/${this.editedItem.cardId}`)
         .then((res) => {
           if (res.data.success) {
             this.alertSuccess = true
@@ -365,7 +365,7 @@ export default {
         })
     },
     updatetable() {
-      this.$axios.get(`${dataRef.host}/api/getAllCard`).then((res) => {
+      this.$axios.get(`/api/getAllCard`).then((res) => {
         console.log(res.data.data)
         this.desserts = res.data.data
         this.loading = false
@@ -376,7 +376,7 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get(`${dataRef.host}/api/getAllCard`).then((res) => {
+    this.$axios.get(`/api/getAllCard`).then((res) => {
       console.log(res.data.data)
       this.desserts = res.data.data
       this.loading = false

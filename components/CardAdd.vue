@@ -53,7 +53,7 @@
 
 
 <script>
-import dataRef from '../model/dataRef.vue'
+
 export default {
   middleware: 'auth',
   data: () => ({
@@ -141,7 +141,7 @@ export default {
 
       if (this.$refs.form.validate()) {
         const res = await this.$axios
-          .post(`${dataRef.host}/api/cardId/add`, {
+          .post(`/api/cardId/add`, {
             _id: this.cardId,
             cardId: this.cardId,
             amount: this.amount,
@@ -152,7 +152,7 @@ export default {
               this.cardId = null
               this.amount = null
               this.alertSuccess = true
-              this.alertError = false            
+              this.alertError = false
               this.$refs.form.reset()
             }
             if (res.data.error) {
@@ -173,7 +173,7 @@ export default {
       //   console.log(res);
       // });
 
-      
+
     },
   },
 }

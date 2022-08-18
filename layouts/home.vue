@@ -10,8 +10,8 @@
       <span> Jinpao Automation </span>
       <v-spacer />
       <v-btn
-        v-for="item in itemBar"
-        :key="item"
+        v-for="(item, index) in itemBar"
+        :key="index"
         color=""
         text
         class="white--text text-caption"

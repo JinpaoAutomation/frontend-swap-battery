@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import dataRef from '../model/dataRef.vue'
+
 
 export default {
   middleware: 'auth',
@@ -112,7 +112,7 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get(`${dataRef.host}/api/getMemberSeller`).then((res) => {
+    this.$axios.get(`/api/getMemberSeller`).then((res) => {
       this.desserts = []
       this.desserts = res.data.data
       console.log(res)

@@ -46,7 +46,6 @@ export default {
       items: [
         { src: '/swapStation1.webp' },
         { src: '/station-charger-1.webp' },
-        { src: 'techRobot.jpg' },
         { src: 'factory4.0.png' },
       ],
     }
@@ -62,7 +61,7 @@ export default {
   animation-direction: alternate;
   text-align: center;
   color: white;
-  justify-content: center;
+  justify-content:  center;
   font-size: 1rem;
   letter-spacing: 0.04em;
   font-weight: 600;
